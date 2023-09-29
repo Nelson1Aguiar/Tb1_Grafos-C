@@ -155,7 +155,7 @@ Grafo* criarGrafo(int v){
     return grafo;
 }
 
-//FUNÇÃO QUE ADICIONA UAS ARESTAS DO GRAFO
+//FUNÇÃO QUE ADICIONA UMA ARESTA NO GRAFO
 void addAresta(Grafo* grafo, int origem, int fim) {
     Lista* novoNo1 = criarNo(fim);
     novoNo1->prox = grafo->listaAdj[origem];
