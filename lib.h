@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <stdbool.h>
+#include <string.h>
 
 typedef struct lista {
     int num;
@@ -14,7 +14,7 @@ typedef struct grafo{
 }Grafo;
 
 void menu();
-Lista* criarNo(int num);
+Lista* criarNo(int num,Lista* lista);
 void liberarLista(Lista* lista);
 Grafo* criarGrafo(int v);
 void addAresta(Grafo* grafo, int origem, int fim);
