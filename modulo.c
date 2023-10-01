@@ -2,48 +2,48 @@
 
 void menu() {
     Grafo* grafo;
-    int v,op,vOrigem,vFinal;
-    printf("Bem vindo! Digite a quantidade de vertices que seu novo grafo tera: \n");
-    scanf("%d",&v);
-    grafo=criarGrafo(v);
+    int v,op,cont=0;
+    FILE *arquivo;
+    char linha[100];
+    arquivo = fopen("C:\\Users\\User\\Desktop\\Grafo.txt", "r");
+
+    if (arquivo == NULL) {
+        printf("Não foi possível abrir o arquivo.\n");
+        return;
+    }
+
+    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+        cont+=1;
+        if(cont==1){
+            v=atoi(&linha[0]);
+            grafo=criarGrafo(v);
+        }else{
+            int origem = atoi(&linha[0]);
+            int destino;
+            for(int i=1;linha[i]!='\n';i++){
+                if(linha[i]!=' '&& linha[i]!='\0'){
+                    destino=atoi(&linha[i]);
+                    addAresta(grafo,origem,destino);
+                }
+            }
+        }
+    }
+    fclose(arquivo);
+
     do{
         puts("------------------------------DIGITE SUA OPCAO------------------------------\n\n");
-        printf("\t1 - Adicionar nova aresta\n\t2 - Exibir grafo\n\t3 - Informar se existe caminho euleriano\n\t4 - Criar um novo grafo\n\t0 - Sair\n");
+        printf("\t1 - Exibir grafo\n\t2 - Informar se existe caminho euleriano\n\t0 - Sair\n");
         scanf("%d",&op);
         switch (op) {
             case 1:
-                puts("Digite o par de vertices dessa aresta\n");
-                printf("De: ");
-                scanf("\t%d",&vOrigem);
-                printf("Para: ");
-                scanf("\t%d",&vFinal);
-                if(vOrigem>(v-1) || vFinal>(v-1) || vOrigem<0 || vOrigem<0){
-                    printf("VERTICE NAO EXISTENTE, EXISTEM APENAS OS VERTICES DE O ATE %d\n\n",vFinal-1);
-                    system("pause");
-                    system("cls");
-                    break;
-                }
-                addAresta(grafo,vOrigem,vFinal);
-                system("cls");
-                break;
-            case 2:
                 printGrafo(grafo);
                 break;
-            case 3:
+            case 2:
                 if(temCaminhoEuleriano(grafo)){
                     puts("Existe caminho euleriano no grafo em questao!");
                 }else{
                     puts("Nao existe caminho euleriano no grafo em questao!");
                 }
-                break;
-            case 4:
-                for(int i=0;i<v;i++){
-                    liberarLista(grafo->listaAdj[i]);
-                }
-                free(grafo);
-                printf("Digite a quantidade de vertices que seu novo grafo tera: \n");
-                scanf("%d",&v);
-                grafo= criarGrafo(v);
                 break;
             case 0:
                 for(int i=0;i<v;i++){
@@ -59,7 +59,7 @@ void menu() {
 }
 
 //FUNÇÃO QUE CRIA UM NO PARA A LISTA DE ADJACÊNCIA
-Lista* criarNo(int num) {
+Lista* criarNo(int num,Lista* lista) {
     Lista* novoNo = (Lista*)malloc(sizeof(Lista));
     if (novoNo == NULL) {
         printf("Erro ao alocar memória.\n");
@@ -157,17 +157,14 @@ Grafo* criarGrafo(int v){
 
 //FUNÇÃO QUE ADICIONA UMA ARESTA NO GRAFO
 void addAresta(Grafo* grafo, int origem, int fim) {
-    Lista* novoNo1 = criarNo(fim);
+    Lista* novoNo1 = criarNo(fim,grafo->listaAdj[origem]);
     novoNo1->prox = grafo->listaAdj[origem];
     grafo->listaAdj[origem] = novoNo1;
-
-    Lista* novoNo2 = criarNo(origem);
-    novoNo2->prox = grafo->listaAdj[fim];
-    grafo->listaAdj[fim] = novoNo2;
 }
 
 //FUNÇÃO DE EXIBIR O GRAFO EM FORMA DE LISTA DE ADJACÊNCIA
 void printGrafo(Grafo* grafo) {
+    system("cls");
     for (int i = 0; i < grafo->v; i++) {
         Lista* corrente = grafo->listaAdj[i];
         printf("Vertice %d: ", i);
