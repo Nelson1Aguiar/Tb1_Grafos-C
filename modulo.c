@@ -34,11 +34,7 @@ void menu() {
         puts("------------------------------DIGITE SUA OPCAO------------------------------\n\n");
         printf("\t1 - Exibir grafo\n\t2 - Informar se existe caminho euleriano\n\t0 - Sair\n");
         scanf("%d",&op);
-        if(!isdigit(op)){
-            printf("OPCAO INVALIDA!\n");
-            return;
-        }
-            switch (op) {
+        switch (op) {
                 case 1:
                     printGrafo(grafo);
                     break;
