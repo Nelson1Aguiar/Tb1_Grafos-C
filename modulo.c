@@ -34,27 +34,31 @@ void menu() {
         puts("------------------------------DIGITE SUA OPCAO------------------------------\n\n");
         printf("\t1 - Exibir grafo\n\t2 - Informar se existe caminho euleriano\n\t0 - Sair\n");
         scanf("%d",&op);
-        switch (op) {
-            case 1:
-                printGrafo(grafo);
-                break;
-            case 2:
-                if(temCaminhoEuleriano(grafo)){
-                    puts("Existe caminho euleriano no grafo em questao!");
-                }else{
-                    puts("Nao existe caminho euleriano no grafo em questao!");
-                }
-                break;
-            case 0:
-                for(int i=0;i<v;i++){
-                    liberarLista(grafo->listaAdj[i]);
-                }
-                free(grafo);
-                break;
-            default:
-                printf("OPCAO INVALIDA!");
-                break;
+        if(!isdigit(op)){
+            printf("OPCAO INVALIDA!\n");
+            return;
         }
+            switch (op) {
+                case 1:
+                    printGrafo(grafo);
+                    break;
+                case 2:
+                    if (temCaminhoEuleriano(grafo)) {
+                        puts("Existe caminho euleriano no grafo em questao!");
+                    } else {
+                        puts("Nao existe caminho euleriano no grafo em questao!");
+                    }
+                    break;
+                case 0:
+                    for (int i = 0; i < v; i++) {
+                        liberarLista(grafo->listaAdj[i]);
+                    }
+                    free(grafo);
+                    break;
+                default:
+                    printf("OPCAO INVALIDA!\n");
+                    break;
+            }
     }while(op!=0);
 }
 
