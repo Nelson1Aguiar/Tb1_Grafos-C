@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct lista {
     int num;
@@ -14,6 +15,7 @@ typedef struct grafo{
 }Grafo;
 
 void menu();
+Grafo* lerArquivo(Grafo *grafo);
 Lista* criarNo(int num,Lista* lista);
 void liberarLista(Lista* lista);
 Grafo* criarGrafo(int v);
