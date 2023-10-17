@@ -2,33 +2,9 @@
 
 void menu() {
     Grafo* grafo;
-    int v,op,cont=0;
-    FILE *arquivo;
-    char linha[100];
-    arquivo = fopen("C:\\Users\\User\\Desktop\\Grafo.txt", "r");
+    int op;
 
-    if (arquivo == NULL) {
-        printf("Não foi possível abrir o arquivo.\n");
-        return;
-    }
-
-    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
-        cont+=1;
-        if(cont==1){
-            v=atoi(&linha[0]);
-            grafo=criarGrafo(v);
-        }else{
-            int origem = atoi(&linha[0]);
-            int destino;
-            for(int i=1;linha[i]!='\n';i++){
-                if(linha[i]!=' '&& linha[i]!='\0'){
-                    destino=atoi(&linha[i]);
-                    addAresta(grafo,origem,destino);
-                }
-            }
-        }
-    }
-    fclose(arquivo);
+    grafo=lerArquivo(grafo);
 
     do{
         puts("------------------------------DIGITE SUA OPCAO------------------------------\n\n");
@@ -46,7 +22,7 @@ void menu() {
                     }
                     break;
                 case 0:
-                    for (int i = 0; i < v; i++) {
+                    for (int i = 0; i < grafo->v; i++) {
                         liberarLista(grafo->listaAdj[i]);
                     }
                     free(grafo);
@@ -56,6 +32,39 @@ void menu() {
                     break;
             }
     }while(op!=0);
+}
+
+Grafo* lerArquivo(Grafo* grafo){
+    FILE *arquivo;
+    char linha[100];
+    int v, cont = 0;
+
+    arquivo = fopen("C:\\Users\\User\\Desktop\\Grafo.txt", "r");
+
+    if (arquivo == NULL) {
+        printf("Não foi possível abrir o arquivo.\n");
+        return NULL;
+    }
+
+    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+        cont += 1;
+        if (cont == 1) {
+            v = atoi(linha);
+            grafo = criarGrafo(v);
+        } else {
+            int origem;
+            int destino;
+            char* token = strtok(linha, " ");
+            origem = atoi(token);
+
+            while ((token = strtok(NULL, " ")) != NULL) {
+                destino = atoi(token);
+                addAresta(grafo, origem, destino);
+            }
+        }
+    }
+    fclose(arquivo);
+    return grafo;
 }
 
 //FUNÇÃO QUE CRIA UM NO PARA A LISTA DE ADJACÊNCIA
